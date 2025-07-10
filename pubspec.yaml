@@ -38,6 +38,10 @@ dependencies:
   get: ^4.7.2
   awesome_snackbar_content: ^0.1.6
   timelines_plus: ^1.0.6
+  provider: ^6.1.5
+  dio: ^5.8.0+1
+  shared_preferences: ^2.5.3
+
 
 dev_dependencies:
   flutter_test:
@@ -51,6 +55,7 @@ dev_dependencies:
   flutter_lints: ^5.0.0
 
 
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -61,6 +66,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
 
   # To add assets to your application, add an assets section, like this:
   # assets:
