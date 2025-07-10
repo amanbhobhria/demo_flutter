@@ -1,58 +1,49 @@
-
-
+import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:my_demo_flutter/model/user_profile_response_model.dart';
-import 'package:my_demo_flutter/preferences/preference.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/user_profile_response_model.dart';
 
 
 class UserProfileController extends GetxController {
+  final String profileApiUrl = "https://jsonplaceholder.typicode.com/users/1";
 
-
-  var profileApiUrl="https://jsonplaceholder.typicode.com/users/1";
-
-SharedPreferences pref = SharedPreferences as SharedPreferences;
-PreferenceManager preferenceManager =PreferenceManager();
-
-
-  List<UserProfileResponseModel> list =UserProfileResponseModel() as List<UserProfileResponseModel>;
-
+  Rx<UserProfileResponseModel?> profile = Rx<UserProfileResponseModel?>(null);
+  RxBool isLoading = false.obs;
 
   @override
   void onInit() {
-    hitProfileApi();
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    preferenceManager.getData();
-    super.onReady();
+    loadProfileFromPrefs(); // Load from prefs on init
+    hitProfileApi();        // Then refresh from API
   }
 
   Future<void> hitProfileApi() async {
+    isLoading.value = true;
 
-    final dio = Dio();
+    try {
+      final response = await Dio().get(profileApiUrl);
+      if (response.statusCode == 200) {
+        final data = UserProfileResponseModel.fromJson(response.data);
+        profile.value = data;
 
-    try{
-      final response = await dio.get(profileApiUrl);
-      list=response as List<UserProfileResponseModel>;
-
-      preferenceManager.setData(list as UserProfileResponseModel);
-
-      print("UserProfile api response = $response");
-
+        // 🔐 Save to SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setString('user_profile', jsonEncode(response.data));
+      }
+    } catch (e) {
+      print("API Error: $e");
+    } finally {
+      isLoading.value = false;
     }
-    catch(e,st)
-    {
-      debugPrint("Api Error $e, $st");
+  }
+
+  Future<void> loadProfileFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonString = prefs.getString('user_profile');
+    if (jsonString != null) {
+      profile.value = UserProfileResponseModel.fromJson(jsonDecode(jsonString));
     }
-
-
-
-
   }
 }

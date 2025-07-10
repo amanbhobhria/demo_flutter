@@ -1,5 +1,6 @@
 class Products {
   dynamic id;
+  bool isFavorite;
   dynamic title;
   dynamic description;
   dynamic category;
@@ -44,9 +45,12 @@ class Products {
         this.minimumOrderQuantity,
         this.meta,
         this.thumbnail,
+        this.isFavorite=false,
         this.images});
 
-  Products.fromJson(Map<String, dynamic> json) {
+  Products.fromJson(Map<String, dynamic> json)
+      : isFavorite = false{
+
     id = json['id'];
     title = json['title'];
     description = json['description'];
@@ -76,6 +80,8 @@ class Products {
     meta = json['meta'] != null ? new Meta.fromJson(json['meta']) : null;
     thumbnail = json['thumbnail'];
     images = json['images'].cast<String>();
+
+
   }
 
   Map<String, dynamic> toJson() {

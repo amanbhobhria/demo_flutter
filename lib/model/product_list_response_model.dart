@@ -2,9 +2,9 @@ import 'product_list_model.dart';
 
 class ProductListResponseModel {
   List<Products>? products;
-  dynamic? total;
-  dynamic? skip;
-  dynamic? limit;
+  dynamic total;
+  dynamic skip;
+  dynamic limit;
 
   ProductListResponseModel({this.products, this.total, this.skip, this.limit});
 
