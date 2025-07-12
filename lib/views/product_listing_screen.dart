@@ -18,12 +18,12 @@ class ProductListingScreen extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
-              Get.toNamed(AppRoutes.userProfileScreen); // Make sure this route is defined
+              Get.toNamed(AppRoutes.userProfileScreen); 
             },
           ),
 
 
-          // 🌗 Theme toggle icon
+
           IconButton(
             icon: Icon(Get.isDarkMode ? Icons.light_mode : Icons.dark_mode),
             onPressed: () => Get.changeThemeMode(
@@ -31,7 +31,6 @@ class ProductListingScreen extends StatelessWidget {
             ),
           ),
 
-          // 👤 Profile icon
 
         ],
       ),
